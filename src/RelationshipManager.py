@@ -31,6 +31,35 @@ class RelationshipManager:
             for i in range(5):
                 col_name = f'Chat_Analysis_{i+1}'
                 if(i >= available_sentiments):
+                    df[col_name] = 'Positive'
+                else:
+                    df[col_name] = sentiments_df.iloc[i]['Sentiment'].strip().replace('\n', ' ') if (sentiments_df.iloc[i]['Sentiment'] != None or pd.isna(sentiments_df.iloc[i]['Sentiment'])) else 'Positive' 
+            
+            c_sentiment, c_analysis = Customer(customer_id).get_latest_service_feedback_Analysys()
+            if(c_analysis is None):
+                df['Customer_service_feedback_Analysis'] = 'Positive'
+                
+            else:
+                df['Customer_service_feedback_Analysis'] = c_sentiment.strip().replace('\n', ' ')
+                
+            return df
+        except Exception as e:
+            raise e
+        
+    def createPromptData(self, customer_id):
+        try:
+            df = self.df
+            df = df[df['Customer_id'] == customer_id]
+            df['Last_active_date'] = pd.to_datetime(df['Last_active_date'],format='%d-%M-%Y')
+            today = datetime.today()
+            df['Months_since_last_activity'] = (today - df['Last_active_date']) // pd.Timedelta(days=30)
+            df = df.drop(columns=['Last_active_date'])
+            
+            sentiments_df = Customer(customer_id).get_latest_convo(5)
+            available_sentiments = len(sentiments_df)
+            for i in range(5):
+                col_name = f'Chat_Analysis_{i+1}'
+                if(i >= available_sentiments):
                     df[col_name] = ''
                 else:
                     df[col_name] = sentiments_df.iloc[i]['Analysis'].strip().replace('\n', ' ') if (sentiments_df.iloc[i]['Analysis'] != None or pd.isna(sentiments_df.iloc[i]['Analysis'])) else '' 
@@ -40,12 +69,11 @@ class RelationshipManager:
                 df['Customer_service_feedback_Analysis'] = ''
                 
             else:
-                df['Customer_service_feedback_Analysis'] = c_analysis.strip().replace('\n', ' ')
+                df['Customer_service_feedback_Analysis'] = c_sentiment.strip().replace('\n', ' ')
                 
             return df
         except Exception as e:
             raise e
-        
     
     def get_churn_report(self):
         try:
@@ -60,10 +88,10 @@ class RelationshipManager:
                 print(res)
                 if res[0][0]>res[0][1]:
                     churn = 0
-                    probability = res[0][0]
                 else:
                     churn = 1
-                    probability = res[0][1]
+                probability = res[0][1]
+                data = self.createPromptData(customer_id)
                 prompt = createPredictionPrompt(data.iloc[0], churn, probability)
                 print(prompt)
                 pred = predictChurn(data=prompt)
