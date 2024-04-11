@@ -1,0 +1,45 @@
+Confusion Matrif for model Random Forest is 
+ [[1 1]
+ [2 2]]Classification Report for model Random Forest is  
+               precision    recall  f1-score   support
+
+           0       0.33      0.50      0.40         2
+           1       0.67      0.50      0.57         4
+
+    accuracy                           0.50         6
+   macro avg       0.50      0.50      0.49         6
+weighted avg       0.56      0.50      0.51         6
+Accuracy score for Random Forest is 0.5Confusion Matrif for model SVR is 
+ [[1 1]
+ [3 1]]Classification Report for model SVR is  
+               precision    recall  f1-score   support
+
+           0       0.25      0.50      0.33         2
+           1       0.50      0.25      0.33         4
+
+    accuracy                           0.33         6
+   macro avg       0.38      0.38      0.33         6
+weighted avg       0.42      0.33      0.33         6
+Accuracy score for SVR is 0.3333333333333333Confusion Matrif for model XGBClassifier is 
+ [[2 0]
+ [3 1]]Classification Report for model XGBClassifier is  
+               precision    recall  f1-score   support
+
+           0       0.40      1.00      0.57         2
+           1       1.00      0.25      0.40         4
+
+    accuracy                           0.50         6
+   macro avg       0.70      0.62      0.49         6
+weighted avg       0.80      0.50      0.46         6
+Accuracy score for XGBClassifier is 0.5Confusion Matrif for model AdaBoost Classifier is 
+ [[1 1]
+ [2 2]]Classification Report for model AdaBoost Classifier is  
+               precision    recall  f1-score   support
+
+           0       0.33      0.50      0.40         2
+           1       0.67      0.50      0.57         4
+
+    accuracy                           0.50         6
+   macro avg       0.50      0.50      0.49         6
+weighted avg       0.56      0.50      0.51         6
+Accuracy score for AdaBoost Classifier is 0.5

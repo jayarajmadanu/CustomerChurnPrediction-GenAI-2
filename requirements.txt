@@ -1,0 +1,11 @@
+python-dotenv
+langchain
+openai
+langchain_openai
+pandas
+streamlit
+streamlit-modal
+Flask
+scikit-learn
+xgboost
+gunicorn
