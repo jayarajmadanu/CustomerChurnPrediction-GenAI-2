@@ -4,6 +4,7 @@ import json
 import numpy as np
 import pandas as pd
 import logging
+import socket
 
 from src.RelationshipManager import RelationshipManager
 from src.DataTransformation import DataTransformation
@@ -11,7 +12,7 @@ from src.modelTrainer import ModelTrainer
 
 
 app = Flask(__name__) # initializing a flask app
-
+socket.setdefaulttimeout(100)
 @app.route('/get-churn-report',methods=['POST'])
 def get_churn():
     rm_id = 0
