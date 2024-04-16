@@ -159,7 +159,6 @@ class ModelTrainer:
 
         models = {
             "Random Forest": RandomForestClassifier(),
-            #"SVR":SVC(),
             "XGBClassifier": XGBClassifier(),
             "AdaBoost Classifier": AdaBoostClassifier(),
             "Gradient Boosting": GradientBoostingClassifier(),
