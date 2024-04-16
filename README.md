@@ -97,6 +97,7 @@ http://127.0.0.1:5000/train
 ```
 
 ### Classification Report for model is  
+```
                precision    recall  f1-score   support
 
            0       0.82      0.92      0.87        49
@@ -105,3 +106,4 @@ http://127.0.0.1:5000/train
     accuracy                           0.84        90
    macro avg       0.85      0.84      0.84        90
 weighted avg       0.85      0.84      0.84        90
+```
