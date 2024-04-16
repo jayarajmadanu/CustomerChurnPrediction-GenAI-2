@@ -6,9 +6,10 @@ import os
 import pickle
 
 
+
 load_dotenv() 
 api_key = os.getenv('OPENAI_API_KEY')
-
+print(api_key)
 llm = OpenAI(temperature=0, api_key=api_key)
 
 def createPredictionPrompt(data, churn, probability):
@@ -16,9 +17,9 @@ def createPredictionPrompt(data, churn, probability):
     #print(data['Age'])
     text = f"""
     Based on the available customer details, Machine learning model predicted as {churn} (0 for not churn, 1 for churn) with probability of {probability} Analyze the customer details and produce analysis summary and the steps to prevent churn based on analysis and customer details
-    Customer Details =  Age: {data['Age'][0]}, Gender: {data['Gender'][0]}, Total_Amount_invested: {data['Total_Amount_invested'][0]}, Duration_of_client_relationship: {data['Duration_of_client_relationship'][0]}, Months_since_last_activity: {data['Months_since_last_activity'][0]} (less than 5 Months_since_last_activity is considered good, customer will not churn.), Customer_rating_for_service: {data['Customer_rating_for_service'][0]} Customer_rating_for_service is in range 1 to 5, greaterthan to 3 is very good, lessthan 3 is bad, and 3 is good, Chat_Analysis_1: {data['Chat_Analysis_1'][0]}, Chat_Analysis_2: {data['Chat_Analysis_2'][0]}, Chat_Analysis_3: {data['Chat_Analysis_3'][0]}, Chat_Analysis_4: {data['Chat_Analysis_4'][0]}, Chat_Analysis_5: {data['Chat_Analysis_5'][0]}, Total_Returns_percentage_in_CAGR: {data['Total_Returns_percentage_in_CAGR'][0]}, Last_1_year_returns_percentage: {data['Last_1_year_returns_percentage'][0]}, Total_Number_of_Complaints_Raised_Last_Year: {data['Total_Number_of_Complaints_Raised'][0]}, Number_of_Unresolved_Issues: {data['Number_of_Unresolved_Issues'][0]}, Average_Salary_per_Month: {data['Average_Salary_per_Month'][0]}, Net_Promoter_Score: {data['Net_Promoter_Score'][0]} (range 1 to 10),  Average_monthly_Investment: {data['Average_monthly_Investment'][0]}, Active_Loans: {data['Active_Loans'][0]}, Customer_service_feedback_Analysis: {data['Customer_service_feedback_Analysis'][0]}, Customer_Category: {data['Customer_Category'][0]} For UHNW customer, Unacceptable if latest chat analysis is negative if it is Neutral then it is good, Unacceptable if more than 2 complaints were raised last year, Unacceptable if there is 1 unresolved issue. Weightage: 3 times. For HNW customer, Unacceptable if latest 2 chat analyses are negative, Unacceptable if more than 3 complaints were raised last year, Unacceptable if there are 2 unresolved issues.Weightage: 2 times. For MA customers, Unacceptable if latest 3 chat analyses are negative, Unacceptable if more than 5 complaints were raised last year, Unacceptable if there are 5 unresolved issues, Weightage: 1 time. Average good Customer_rating_for_service is 7. 
+    Customer Details =  Age: {data['Age'][0]}, Gender: {data['Gender'][0]}, Total_Amount_invested: {data['AUM'][0]}, Previous_AUM: {data['Previous_AUM'][0]}, Months_since_last_activity: {data['Months_since_last_activity'][0]} (less than 5 Months_since_last_activity is considered good, customer will not churn.), Customer_rating_for_service: {data['Customer_rating_for_service'][0]}(above 7 is good), Chat_Analysis_1: {data['Chat_Analysis_1'][0]}, Chat_Analysis_2: {data['Chat_Analysis_2'][0]}, Chat_Analysis_3: {data['Chat_Analysis_3'][0]}, Chat_Analysis_4: {data['Chat_Analysis_4'][0]}, Chat_Analysis_5: {data['Chat_Analysis_5'][0]}, Total_Returns_percentage: {data['Total_Returns_percentage_in_CAGR'][0]}, Last_1_year_returns_percentage: {data['Last_1_year_returns_percentage'][0]}, Total_Number_of_Complaints_Raised_Last_Year: {data['Total_Number_of_Complaints_Raised'][0]}, Number_of_Unresolved_Issues: {data['Number_of_Unresolved_Issues'][0]}, Net_Promoter_Score: {data['Net_Promoter_Score'][0]} (range 1 to 10), Customer_Category: {data['Category'][0]} For UHNW customer, Unacceptable if latest chat analysis is negative if it is Neutral then it is good, Unacceptable if more than 2 complaints were raised last year, Unacceptable if there is 1 unresolved issue. Weightage: 3 times. For HNW customer, Unacceptable if latest 2 chat analyses are negative, Unacceptable if more than 3 complaints were raised last year, Unacceptable if there are 2 unresolved issues.Weightage: 2 times. For MA customers, Unacceptable if latest 3 chat analyses are negative, Unacceptable if more than 5 complaints were raised last year, Unacceptable if there are 5 unresolved issues, Weightage: 1 time. Average good Customer_rating_for_service is 7. 
     Result should always be in below format.
-	Analysis: 'Based on the provided customer details analyze and identify any potential risks, concerns, or patterns that require attention and reason why customer may churn or not churn(be specific and mention data, don't provide generic statements) in one paragraph'
+	Analysis: 'Based on the provided customer details analyze and identify any potential risks, concerns, or patterns that require attention and reason why customer may churn or not churn(be specific for each customer and mention relevant data, don't provide generic statements) in one paragraph'
     Preventive Steps: 'Based on the analysis, provide clear and actionable prevention steps or recommendations to address the identified issues or mitigate potential risks for this specific customer (don't provide generic statements, be specific) in one paragraph'
     """
     return text
@@ -35,7 +36,9 @@ def getCRMData():
 
 
 def predictChurn(data, llm=llm):
-     
+    load_dotenv()
+    api_key = os.getenv('OPENAI_API_KEY')
+    llm = OpenAI(temperature=0, api_key=api_key)
     pred = llm.predict(data)
     print(pred)
     return pred
@@ -48,6 +51,10 @@ def sentimentAnalysis(data, llm=llm):
     Sentiment: 'sentiment (Positive / Neutral / Negative)'
     Analysis: 'Based on the provided conversation between customer and assistant, analyze the dialogue and extract the reason for the customer's call or the issue the customer is facing. Identify key phrases, keywords, or cues that indicate the purpose of the customer's contact or any problems they are encountering in small one line paragraph with less than 30 words'
     """
+    load_dotenv()
+    api_key = os.getenv('OPENAI_API_KEY')
+    print(api_key+ '--------------------------')
+    llm = OpenAI(name='gpt-3.5-turbo-0125', temperature=0, api_key=api_key)
     pred = llm.predict(text)
     pred = pred.split('Sentiment: ')[1]
     tmp = pred.split('Analysis: ')

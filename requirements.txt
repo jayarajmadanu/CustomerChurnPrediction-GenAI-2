@@ -9,3 +9,5 @@ Flask
 scikit-learn
 xgboost
 gunicorn
+openpyxl
+flask-cors

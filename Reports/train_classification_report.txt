@@ -1,0 +1,56 @@
+Confusion Matrix for model Random Forest is 
+ [[46  3]
+ [12 29]]
+Classification Report for model Random Forest is  
+               precision    recall  f1-score   support
+
+           0       0.79      0.94      0.86        49
+           1       0.91      0.71      0.79        41
+
+    accuracy                           0.83        90
+   macro avg       0.85      0.82      0.83        90
+weighted avg       0.84      0.83      0.83        90
+
+Accuracy score for Random Forest is 0.8333333333333334
+Confusion Matrix for model XGBClassifier is 
+ [[45  4]
+ [10 31]]
+Classification Report for model XGBClassifier is  
+               precision    recall  f1-score   support
+
+           0       0.82      0.92      0.87        49
+           1       0.89      0.76      0.82        41
+
+    accuracy                           0.84        90
+   macro avg       0.85      0.84      0.84        90
+weighted avg       0.85      0.84      0.84        90
+
+Accuracy score for XGBClassifier is 0.8444444444444444
+Confusion Matrix for model AdaBoost Classifier is 
+ [[48  1]
+ [15 26]]
+Classification Report for model AdaBoost Classifier is  
+               precision    recall  f1-score   support
+
+           0       0.76      0.98      0.86        49
+           1       0.96      0.63      0.76        41
+
+    accuracy                           0.82        90
+   macro avg       0.86      0.81      0.81        90
+weighted avg       0.85      0.82      0.82        90
+
+Accuracy score for AdaBoost Classifier is 0.8222222222222222
+Confusion Matrix for model Gradient Boosting is 
+ [[49  0]
+ [15 26]]
+Classification Report for model Gradient Boosting is  
+               precision    recall  f1-score   support
+
+           0       0.77      1.00      0.87        49
+           1       1.00      0.63      0.78        41
+
+    accuracy                           0.83        90
+   macro avg       0.88      0.82      0.82        90
+weighted avg       0.87      0.83      0.83        90
+
+Accuracy score for Gradient Boosting is 0.8333333333333334

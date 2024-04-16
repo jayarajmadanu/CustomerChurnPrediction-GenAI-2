@@ -1,5 +1,5 @@
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, make_scorer, precision_score
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, make_scorer, precision_score, f1_score
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier
@@ -32,33 +32,33 @@ class ModelTrainer:
             cm = confusion_matrix(y_test, y_test_pred)
             test_model_score = accuracy_score(y_test, y_test_pred)
             classifi_report = classification_report(y_true=y_test, y_pred=y_test_pred)
-            with open("Data/train_classification_report.txt", "a") as f:
-                    f.write(f"\nConfusion Matrif for model {model_name} is \n {cm}")
+            with open("Reports/train_classification_report.txt", "a") as f:
+                    f.write(f"\nConfusion Matrix for model {model_name} is \n {cm}")
                     f.write(f"\nClassification Report for model {model_name} is  \n {classifi_report}")
                     f.write(f"\nAccuracy score for {model_name} is {test_model_score}")
-            print(f"Confusion Matrif for model {model_name} is \n {cm}")
+            print(f"Confusion Matrix for model {model_name} is \n {cm}")
             print(f"Classification Report for model {model_name} is  \n {classifi_report}")
             
             print(f"Accuracy score for {model_name} is {test_model_score}")
 
             y_train_pred = model.predict(X_train)
-            train_model_score = accuracy_score(y_train, y_train_pred)
+            train_model_score = f1_score(y_train, y_train_pred)
             report[model_name] = {
                 'model' : model,
                 'model_name': model_name,
-                'accuracy_score_test' : test_model_score,
-                'accuracy_score_train' : train_model_score,
+                'f1_score_test' : test_model_score,
+                'f1_score_train' : train_model_score,
                 'best_params': gs.best_params_
             }
         print(f'Model Evaluation report: \n{report}')
-        with open("Data/train_report.txt", "a") as f:
+        with open("Reports/train_report.txt", "a") as f:
             f.write(f'Model Evaluation report: \n{report}')
         return report
     
     def train_model(self):
         df = pd.read_csv('Data/final_transformed.csv')
-        X = df.iloc[:, 0:21]
-        y = df.iloc[:, 21].astype(int)
+        X = df.iloc[:, 0:17]
+        y = df.iloc[:, 17].astype(int)
         
         X_train, X_test, y_train, y_test  = train_test_split(X,y, test_size=0.3, random_state=57)
         
@@ -159,22 +159,24 @@ class ModelTrainer:
 
         models = {
             "Random Forest": RandomForestClassifier(),
-            "SVR":SVC(),
+            #"SVR":SVC(),
             "XGBClassifier": XGBClassifier(),
             "AdaBoost Classifier": AdaBoostClassifier(),
-            #"Gradient Boosting": GradientBoostingClassifier(),
+            "Gradient Boosting": GradientBoostingClassifier(),
         }           
         
         report = self.evaluate_models(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, params=params)
         
         best_model_name = ""
-        max_accuracy_score_test = 0
+        max_f1_score_test = 0
         for model_name in report.keys():
-            if max_accuracy_score_test < report[model_name]['accuracy_score_test']:
-                max_accuracy_score_test = report[model_name]['accuracy_score_test']
+            if max_f1_score_test < report[model_name]['f1_score_test']:
+                max_f1_score_test = report[model_name]['f1_score_test']
                 best_model_name = model_name
 
-        best_model = report[best_model_name]['model'] 
-        
+        best_model = report[best_model_name]['model']
+         
+        with open("Reports/best_model.txt", "a") as f:
+            f.write(f'Best Model: \n{best_model}')
         save_object('models/best_model.pkl', best_model)
               
