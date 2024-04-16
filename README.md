@@ -55,9 +55,9 @@ provide RM id in the body
 {
     "rm_id":"2001"
 }
-```JSON
-Sample Response:
 ```
+Sample Response:
+```JSON
 {"columns":["customer_id","churn","probability","analysis","preventive_steps"],"index":[0,1],"data":[[1001066,1,0.6466273069,"Based
 on the provided customer details, it can be observed that the customer is a 59-year-old male with a high total amount
 invested and previous AUM. However, the customer has been inactive for 3 months and has a customer rating for service of
