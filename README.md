@@ -10,7 +10,7 @@ This project presents a predictive model tailored for wealth management firms to
 **Analysis and Preventive Steps:** Employs a Generative AI (GenAI) model to analyze customer data and recommend strategic actions to mitigate churn risk.
 RM Integration: Designed for seamless integration into the workflow of Relationship Managers, providing churn reports and actionable insights for their client portfolios.
 
-##Architecture
+## Architecture
 
 ![Architecture Diagram](img/archiDiad.PNG)
 
